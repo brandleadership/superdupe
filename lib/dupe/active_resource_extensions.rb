@@ -8,26 +8,23 @@ module ActiveResource #:nodoc:
   class Connection #:nodoc:
     def get(path, headers = {}) #:nodoc:
       begin
-        response = request(:get, path, build_request_headers(headers, :get))
-
-      # if the request threw an exception
-      rescue
         mocked_response = Dupe.network.request(:get, path)
         ActiveResource::HttpMock.respond_to do |mock|
           mock.get(path, {}, mocked_response)
         end
         response = request(:get, path, build_request_headers(headers, :get))
         ActiveResource::HttpMock.delete_mock(:get, path)
+
+      # if the request threw an exception
+      rescue
+        response = request(:get, path, build_request_headers(headers, :get))
       end
       format.decode(response.body)
     end
+
     
     def post(path, body = '', headers = {}) #:nodoc:
       begin
-        response = request(:post, path, body.to_s, build_request_headers(headers, :post))
-        
-      # if the request threw an exception
-      rescue
         resource_hash = Hash.from_xml(body)
         resource_hash = resource_hash[resource_hash.keys.first]
         resource_hash = {} unless resource_hash.kind_of?(Hash)
@@ -47,16 +44,17 @@ module ActiveResource #:nodoc:
         end
         response = request(:post, path, body.to_s, build_request_headers(headers, :post))
         ActiveResource::HttpMock.delete_mock(:post, path)
+
+      # if the request threw an exception
+      rescue
+        response = request(:post, path, body.to_s, build_request_headers(headers, :post))
       end
       response
     end
     
+    
     def put(path, body = '', headers = {}) #:nodoc:
       begin
-        response = request(:put, path, body.to_s, build_request_headers(headers, :put))
-        
-      # if the request threw an exception
-      rescue
         resource_hash = Hash.from_xml(body)
         resource_hash = resource_hash[resource_hash.keys.first]
         resource_hash = {} unless resource_hash.kind_of?(Hash)
@@ -78,9 +76,14 @@ module ActiveResource #:nodoc:
         end
         response = request(:put, path, body.to_s, build_request_headers(headers, :put))
         ActiveResource::HttpMock.delete_mock(:put, path)
+        
+      # if the request threw an exception
+      rescue
+        response = request(:put, path, body.to_s, build_request_headers(headers, :put))        
       end
       response
     end
+
 
     def delete(path, headers = {})
       Dupe.network.request(:delete, path)
