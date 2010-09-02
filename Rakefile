@@ -25,15 +25,14 @@ end
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gemspec|
-    gemspec.name        = "dupe"
+    gemspec.name        = "superdupe"
     gemspec.summary     = "A tool that helps you mock services while cuking."
-    gemspec.description = "Dupe rides on top of ActiveResource to allow you to cuke the client side of 
-                           a service-oriented app without having to worry about whether or not the service 
-                           is live or available while cuking."
-    gemspec.email       = "moonmaster9000@gmail.com"
+    gemspec.description = "SuperDupe is a fork of the originally Dupe and rides on top of ActiveResource to allow you to cuke the client side of 
+                           a service-oriented app without having to worry about whether or not the service is live or available while cuking."
+    gemspec.email       = "marco.ribi@screenconcept.ch"
     gemspec.files       = FileList['lib/**/*.rb', 'rails_generators/**/*', 'README.rdoc']
-    gemspec.homepage    = "http://github.com/moonmaster9000/dupe"
-    gemspec.authors     = ["Matt Parker"]
+    gemspec.homepage    = "http://github.com/screenconcept/dupe"
+    gemspec.authors     = ["Marco Ribi"]
     gemspec.add_dependency('activeresource', '>= 2.3.3')
   end
   Jeweler::GemcutterTasks.new
