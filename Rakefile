@@ -35,7 +35,7 @@ begin
     gemspec.authors     = ["Marco Ribi"]
     gemspec.add_dependency('activeresource', '>= 2.3.3')
   end
-  Jeweler::GemcutterTasks.new
+  # Jeweler::GemcutterTasks.new
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
 end
