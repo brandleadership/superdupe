@@ -25,7 +25,6 @@ class Dupe
           StandardError, 
           "Tried to mock a response to a non-matched url! This should never occur. My pattern: #{@url_pattern}. Url: #{url}"
         ) unless match?(url)
-      
         grouped_results = url_pattern.match(url)[1..-1]
         grouped_results << body if body
         resp = @response.call *grouped_results
@@ -49,7 +48,12 @@ class Dupe
             raise ResourceNotFoundError, "Failed with 404: the request '#{url}' returned nil." 
             
           when Dupe::Database::Record
-            resp = resp.to_xml_safe(:root => resp.__model__.name.to_s)
+            # if a namespace is available, demodulize the modelname
+            if resp.__model__.name.to_s.include?('::')
+              resp = resp.to_xml_safe(:root => resp.__model__.name.to_s.demodulize)
+            else
+              resp = resp.to_xml_safe(:root => resp.__model__.name.to_s)
+            end
 
           when Array
             if resp.empty?

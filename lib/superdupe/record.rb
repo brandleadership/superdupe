@@ -21,7 +21,13 @@ class Dupe
       end
 
       def record_inspect
-        class_name = __model__ ? "Duped::#{__model__.name.to_s.titleize}" : self.class.to_s
+        # if a namespace is available, the titleize method destroy the scope operator
+        if class_name = __model__ 
+          __model__name.to_s.include?('::') ? "Duped::#{__model__.name.to_s}" : "Duped::#{__model__.name.to_s.titleize}"
+        else
+          self.class.to_s
+        end
+        
         "<##{class_name}".tap do |inspection|
           keys.each do |key|
             inspection << " #{key}=#{self[key].inspect}"

@@ -15,8 +15,9 @@ module ActiveResource #:nodoc:
       # Overwrite the configuration of ActiveResource authentication (self.password). Don't need it for mocking.
       def password=(password)
       end
+
       
-      def find(*arguments)      
+      def find(*arguments)
         scope = arguments.slice!(0)
         options = arguments.slice!(0) || {}
 

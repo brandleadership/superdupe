@@ -168,33 +168,35 @@ class Dupe
       model_object.tap do |m|
         models[model_name] = m
         database.create_table model_name
+                
         mocks = %{
           network.define_service_mock(
             :get, 
-            %r{^#{model_name.to_s.titleize.constantize.prefix rescue '/'}#{model_name.to_s.pluralize}\\.xml$}, 
+            %r{^#{model_name.to_s.constantize.prefix rescue '/'}#{model_name.to_s.demodulize.downcase.pluralize}\\.xml$}, 
             proc { Dupe.find(:#{model_name.to_s.pluralize}) }
           )
           network.define_service_mock(
             :get, 
-            %r{^#{model_name.to_s.titleize.constantize.prefix rescue '/'}#{model_name.to_s.pluralize}/(\\d+)\\.xml$}, 
-            proc {|id| Dupe.find(:#{model_name}) {|resource| resource.id == id.to_i}}
+            %r{^#{model_name.to_s.constantize.prefix rescue '/'}#{model_name.to_s.demodulize.downcase.pluralize}/(\\d+)\\.xml$}, 
+            proc {|id| Dupe.find(:"#{model_name.to_s}") {|resource| resource.id == id.to_i}}
           )
           network.define_service_mock(
             :post, 
-            %r{^#{model_name.to_s.titleize.constantize.prefix rescue '/'}#{model_name.to_s.pluralize}\\.xml$}, 
+            %r{^#{model_name.to_s.constantize.prefix rescue '/'}#{model_name.to_s.demodulize.downcase.pluralize}\\.xml$}, 
             proc { |post_body| Dupe.create(:#{model_name.to_s}, post_body) }
           )
           network.define_service_mock(
             :put,
-            %r{^#{model_name.to_s.titleize.constantize.prefix rescue '/'}#{model_name.to_s.pluralize}/(\\d+)\\.xml$}, 
+            %r{^#{model_name.to_s.constantize.prefix rescue '/'}#{model_name.to_s.demodulize.downcase.pluralize}/(\\d+)\\.xml$}, 
             proc { |id, put_data| Dupe.find(:#{model_name.to_s}) {|resource| resource.id == id.to_i}.merge!(put_data) }
           )
           network.define_service_mock(
             :delete,
-            %r{^#{model_name.to_s.titleize.constantize.prefix rescue '/'}#{model_name.to_s.pluralize}/(\\d+)\\.xml$}, 
+            %r{^#{model_name.to_s.constantize.prefix rescue '/'}#{model_name.to_s.demodulize.downcase.pluralize}/(\\d+)\\.xml$}, 
             proc { |id| Dupe.delete(:#{model_name.to_s}) {|resource| resource.id == id.to_i} }
           )
         }
+        
         eval(mocks)
       end
     end
@@ -260,7 +262,7 @@ class Dupe
     def create(model_name, records={})
       model_name = model_name.to_s.singularize.to_sym
       define model_name unless model_exists(model_name)
-      records = records.kind_of?(Array) ? records.map {|r| r.symbolize_keys} : records.symbolize_keys!    
+      records = records.kind_of?(Array) ? records.map {|r| r.symbolize_keys} : records.symbolize_keys!
       create_and_insert records, :into => model_name
     end
 
@@ -488,14 +490,13 @@ class Dupe
       ) if !into || !into.kind_of?(Hash) || !into[:into]
       
       # do we have several records to create, and are they each a hash?
-      if records.kind_of?(Array) and
-         records.inject(true) {|bool, r| bool and r.kind_of?(Hash)}
+      if records.kind_of?(Array) and records.inject(true) {|bool, r| bool and r.kind_of?(Hash)}
         [].tap do |results|
           records.each do |record| 
             results << models[into[:into]].create(record).tap {|r| database.insert r}
           end
         end
-      
+        
       # do we only have one record to create, and is it a hash?
       elsif records.kind_of?(Hash)
         models[into[:into]].create(records).tap {|r| database.insert r}
