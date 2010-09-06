@@ -173,7 +173,7 @@ class Dupe
           network.define_service_mock(
             :get, 
             %r{^#{model_name.to_s.constantize.prefix rescue '/'}#{model_name.to_s.demodulize.downcase.pluralize}\\.xml$}, 
-            proc { Dupe.find(:#{model_name.to_s.pluralize}) }
+            proc { Dupe.find(:"#{model_name.to_s.pluralize}") }
           )
           network.define_service_mock(
             :get, 
@@ -183,17 +183,17 @@ class Dupe
           network.define_service_mock(
             :post, 
             %r{^#{model_name.to_s.constantize.prefix rescue '/'}#{model_name.to_s.demodulize.downcase.pluralize}\\.xml$}, 
-            proc { |post_body| Dupe.create(:#{model_name.to_s}, post_body) }
+            proc { |post_body| Dupe.create(:"#{model_name.to_s}", post_body) }
           )
           network.define_service_mock(
             :put,
             %r{^#{model_name.to_s.constantize.prefix rescue '/'}#{model_name.to_s.demodulize.downcase.pluralize}/(\\d+)\\.xml$}, 
-            proc { |id, put_data| Dupe.find(:#{model_name.to_s}) {|resource| resource.id == id.to_i}.merge!(put_data) }
+            proc { |id, put_data| Dupe.find(:"#{model_name.to_s}") {|resource| resource.id == id.to_i}.merge!(put_data) }
           )
           network.define_service_mock(
             :delete,
             %r{^#{model_name.to_s.constantize.prefix rescue '/'}#{model_name.to_s.demodulize.downcase.pluralize}/(\\d+)\\.xml$}, 
-            proc { |id| Dupe.delete(:#{model_name.to_s}) {|resource| resource.id == id.to_i} }
+            proc { |id| Dupe.delete(:"#{model_name.to_s}") {|resource| resource.id == id.to_i} }
           )
         }
         
