@@ -10,5 +10,6 @@ SuperDupe is a fork of the originally gem dupe 0.5.1 (Matt Parker). At first, th
     gem install superdupe
     
 # Usage
+*Register a mock object*
     Dupe.create <class_name>, <attributes>
     Dupe.create Customer, :name => 'test customer'
