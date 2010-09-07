@@ -29,6 +29,9 @@ SuperDupe is a fork of the originally gem dupe 0.5.1 (Matt Parker). At first, th
     Dupe.network.mocks[<http-method>]
     Dupe.network.mocks[:get]
     
+*Reset registered url patterns*
+    Dupe.reset
+    
 *Register a custom mock with a param-filter*
     Get %r{\/customers\.xml\?state=(active|inactive)} do |state|
       if state == 'active'
