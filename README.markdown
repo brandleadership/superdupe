@@ -38,3 +38,6 @@ SuperDupe is a fork of the originally gem dupe 0.5.1 (Matt Parker). At first, th
       end
     end
     # Register a custom mock with the entered url pattern
+    
+*Find the custom registered object*
+    Customer.find :all, :params => {:state => 'active'}
