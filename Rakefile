@@ -33,7 +33,7 @@ begin
     gemspec.email       = "marco.ribi@screenconcept.ch"
     gemspec.files       = FileList['lib/**/*.rb', 'rails_generators/**/*', 'README.markdown']
     gemspec.homepage    = "http://github.com/screenconcept/dupe"
-    gemspec.authors     = ["Marco Ribi"]
+    gemspec.authors     = ["Marco Ribi", "Felipe Kaufmann"]
     gemspec.add_dependency('activeresource', '>= 2.3.3')
   end
   
