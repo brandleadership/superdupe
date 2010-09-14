@@ -30,9 +30,9 @@ begin
     gemspec.summary     = "A tool that helps you mock services while cuking."
     gemspec.description = "SuperDupe is a fork of the originally Dupe and rides on top of ActiveResource to allow you to cuke the client side of 
                            a service-oriented app without having to worry about whether or not the service is live or available while cuking."
-    gemspec.email       = "marco.ribi@screenconcept.ch"
+    gemspec.email       = "developers@screenconcept.ch"
     gemspec.files       = FileList['lib/**/*.rb', 'rails_generators/**/*', 'README.markdown']
-    gemspec.homepage    = "http://github.com/screenconcept/dupe"
+    gemspec.homepage    = "http://github.com/screenconcept/superdupe"
     gemspec.authors     = ["Marco Ribi", "Felipe Kaufmann"]
     gemspec.add_dependency('activeresource', '>= 2.3.3')
   end
