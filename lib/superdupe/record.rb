@@ -35,9 +35,17 @@ class Dupe
           inspection << ">"
         end
       end
-      
+
       alias_method :hash_inspect, :inspect
       alias_method :inspect, :record_inspect
+
+      def demodulize
+        if self.__model__.name.to_s.include?('::')
+          self.__model__.name.to_s.demodulize
+        else
+          self.__model__.name.to_s
+        end
+      end
       
       private
       def attempting_to_assign(method_name)

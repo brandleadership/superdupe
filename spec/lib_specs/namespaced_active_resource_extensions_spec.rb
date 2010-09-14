@@ -28,7 +28,7 @@ describe Ns::Customer do
     end
   
     it "should generate a GetMock" do
-      customer = Dupe.find :"B2b::Customer"
+      customer = Dupe.find :"Ns::Customer"
       customer.should_not be_nil
       customer.class.should == Dupe::Database::Record
     end
@@ -88,7 +88,7 @@ describe Ns::Customer do
       it "should find all active customers" do
         active_customers = Ns::Customer.find :all, :params => {:state => 'active'}
         active_customers.size.should == 1
-        active_customers.should be_include(Customer.find(1))
+        active_customers.should be_include(Ns::Customer.find(1))
       end
       
       it "should find all inactive customers" do

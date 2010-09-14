@@ -49,17 +49,12 @@ class Dupe
             
           when Dupe::Database::Record
             # if a namespace is available, demodulize the modelname
-            if resp.__model__.name.to_s.include?('::')
-              resp = resp.to_xml_safe(:root => resp.__model__.name.to_s.demodulize)
-            else
-              resp = resp.to_xml_safe(:root => resp.__model__.name.to_s)
-            end
-
+            resp = resp.to_xml_safe(:root => resp.demodulize)
           when Array
             if resp.empty?
               resp = [].to_xml :root => 'results'
             else
-              resp = resp.map {|r| HashPruner.prune(r)}.to_xml(:root => resp.first.__model__.name.to_s.pluralize)
+              resp = resp.map {|r| HashPruner.prune(r)}.to_xml(:root => resp.first.demodulize.pluralize)
             end
         end
         Dupe.network.log.add_request :get, url, resp
