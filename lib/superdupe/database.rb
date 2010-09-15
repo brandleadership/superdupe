@@ -36,7 +36,7 @@ class Dupe
       if !record.kind_of?(Dupe::Database::Record) || !record.__model__
         raise ArgumentError, "You may only insert well-defined Dupe::Database::Record objects" 
       end
-      record[:id] ||= @tables[record.__model__.name].map {|r| r.id}.last + 1
+      record[:id] ||= (@tables[record.__model__.name].blank? ? 1 : @tables[record.__model__.name].map {|r| r.id}.last + 1)
       @tables[record.__model__.name] ||= []
       @tables[record.__model__.name] << record
       record.__model__.run_after_create_callbacks(record)
