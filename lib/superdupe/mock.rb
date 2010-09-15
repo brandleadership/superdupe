@@ -77,7 +77,7 @@ class Dupe
           
           when Dupe::Database::Record
             new_path = "/#{resp.__model__.name.to_s.pluralize}/#{resp.id}.xml"
-            resp = resp.to_xml_safe(:root => resp.__model__.name.to_s)
+            resp = resp.to_xml_safe(:root => resp.demodulize)
             Dupe.network.log.add_request :post, url, resp
             return resp, new_path
           
