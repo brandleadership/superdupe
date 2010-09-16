@@ -18,7 +18,7 @@ class Dupe
     # database.delete :book, proc {|b| b.id < 10} # --> would delete all books found who's id is less than 10
     # database.delete :books, proc {|b| b.id < 10} # --> would delete all books found who's id is less than 10
     def delete(resource_name, conditions=nil)
-      model_name = resource_name.to_s.singularize.to_sym
+      model_name = resource_name.plural? ? resource_name.to_s.singularize.to_sym : resource_name.to_s.to_sym
       raise StandardError, "Invalid DELETE operation: The resource #{model_name} has not been defined" unless @tables[model_name]
       
       if conditions

@@ -360,7 +360,11 @@ class Dupe
     # Notice that by using the plural form of the model name, we ensure that we receive back an array - 
     # even in the case that the query did not find any results (it simply returns an empty array).
     def find(model_name, &block) # yield: record
-      results = database.select model_name.to_s.singularize.to_sym, block
+      if model_name.plural?
+        results = database.select model_name.to_s.singularize.to_sym, block
+      else
+        results = database.select model_name.to_s.to_sym, block
+      end
       model_name.plural? ? results : results.first
     end
     
@@ -475,7 +479,7 @@ class Dupe
     end
     
     def model_exists(model_name)
-      models[model_name.to_s.singularize.to_sym]
+      model_name.plural? ? models[model_name.to_s.singularize.to_sym] : models[model_name.to_s.to_sym]
     end
     
     def create_model(model_name)
