@@ -9,23 +9,6 @@ class Dupe
         
         class NilValue; end
         
-        attr_reader :name
-        attr_reader :transformer
-        attr_reader :default
-        
-        def initialize(name, options={})
-          default = options[:default]
-          transformer = options[:transformer]
-          
-          if transformer
-            raise ArgumentError, "Your transformer must be a kind of proc." if !transformer.kind_of?(Proc)
-            raise ArgumentError, "Your transformer must accept a parameter." if transformer.arity != 1
-          end
-          
-          @name = name
-          @default = default
-          @transformer = transformer
-        end
         
         # Suppose we have the following attribute template:
         #

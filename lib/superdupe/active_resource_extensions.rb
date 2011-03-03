@@ -32,7 +32,7 @@ module ActiveResource #:nodoc:
       
       private
       def find_every(options)
-        external_request = options[:external_request] if options.has_key?(:external_request)
+        external_request = Dupe.disabled?
         
         case from = options[:from]
         when Symbol
@@ -48,8 +48,8 @@ module ActiveResource #:nodoc:
       end
 
       def find_one(options)
-        external_request = options[:external_request] if options.has_key?(:external_request)
-        
+        external_request = Dupe.disabled?
+
         case from = options[:from]
         when Symbol
           instantiate_record(get(from, options[:params]))
@@ -60,8 +60,8 @@ module ActiveResource #:nodoc:
       end
 
       def find_single(scope, options)
-        external_request = options[:external_request] if options.has_key?(:external_request)
-                
+        external_request = Dupe.disabled?
+
         prefix_options, query_options = split_options(options[:params])
         path = element_path(scope, prefix_options, query_options)
         instantiate_record(connection.get(path, headers, external_request), prefix_options)

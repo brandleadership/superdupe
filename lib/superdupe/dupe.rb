@@ -11,7 +11,19 @@ class Dupe
     # set this to "true" if you want Dupe to spit out mocked requests
     # after each of your cucumber scenario's run
     attr_accessor :debug
-    
+
+    def enable!
+      @dupe_disabled = false
+    end
+
+    def disable!
+      @dupe_disabled = true
+    end
+
+    def disabled?
+      @dupe_disabled
+    end
+
     # Suppose we're creating a 'book' resource. Perhaps our app assumes every book has a title, so let's define a book resource
     # that specifies just that:
     # 
